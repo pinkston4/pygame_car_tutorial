@@ -25,6 +25,8 @@ def map():
     for layer in tmx_map.visible_layers:
         for x, y, gid, in layer:
             tile = tmx_map.get_tile_image_by_gid(gid)
+            if tile is None:
+                continue
             screen.blit(tile, (x * tmx_map.tilewidth, y * tmx_map.tileheight))
 
 
