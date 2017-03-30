@@ -21,9 +21,11 @@ car_img = pygame.image.load('getawaycar.png')
 car_width = 47
 
 
-def map():
+def map_game(shifter = None):
     for layer in tmx_map.visible_layers:
         for x, y, gid, in layer:
+            if shifter is not None:
+                y += shifter
             tile = tmx_map.get_tile_image_by_gid(gid)
             if tile is None:
                 continue
@@ -39,8 +41,9 @@ def the_game_loop():
     quitter = False
     x = (screen_width * 0.45)
     y = (screen_height * 0.7)
-
     x_change = 0
+    y_change = 0
+    map_shift = 0
 
     while not quitter:
 
@@ -55,19 +58,28 @@ def the_game_loop():
 
                 elif event.key == pygame.K_RIGHT:
                     x_change = 15
+                elif event.key == pygame.K_UP:
+                    y_change = -15
+
+                elif event.key == pygame.K_DOWN:
+                    y_change = 15
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     x_change = 0
+                elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                    y_change = 0
 
         x += x_change
+        y += y_change
         if x > (screen_width - car_width) or x < 0:
             continue
 
-        map()
+        map_game(map_shift)
         car(x, y)
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(30)
+        map_shift += 15
 
 
 the_game_loop()
