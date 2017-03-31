@@ -18,14 +18,13 @@ pygame.display.set_caption("Don't get caught!!!")
 clock = pygame.time.Clock()
 
 car_img = pygame.image.load('getawaycar.png')
+
 car_width = 47
 
 
-def map_game(shifter = None):
+def map_game():
     for layer in tmx_map.visible_layers:
         for x, y, gid, in layer:
-            if shifter is not None:
-                y += shifter
             tile = tmx_map.get_tile_image_by_gid(gid)
             if tile is None:
                 continue
@@ -43,7 +42,6 @@ def the_game_loop():
     y = (screen_height * 0.7)
     x_change = 0
     y_change = 0
-    map_shift = 0
 
     while not quitter:
 
@@ -72,14 +70,13 @@ def the_game_loop():
 
         x += x_change
         y += y_change
-        if x > (screen_width - car_width) or x < 0:
+        if x > 864 or x < 320:
             continue
 
-        map_game(map_shift)
+        map_game()
         car(x, y)
         pygame.display.update()
         clock.tick(30)
-        map_shift += 15
 
 
 the_game_loop()
